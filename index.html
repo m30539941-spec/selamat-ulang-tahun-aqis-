@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Selamat Ulang Tahun Aqiss</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    overflow:hidden;
+    background:linear-gradient(135deg,#ff5fa2,#ffb347);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    text-align:center;
+    color:white;
+    z-index:10;
+}
+
+h1{
+    font-size:60px;
+    animation:zoom 2s infinite alternate;
+}
+
+h2{
+    font-size:35px;
+    margin-top:10px;
+}
+
+p{
+    margin-top:20px;
+    font-size:22px;
+}
+
+@keyframes zoom{
+    from{transform:scale(1);}
+    to{transform:scale(1.1);}
+}
+
+/* Balon */
+.balloon{
+    position:absolute;
+    bottom:-150px;
+    width:60px;
+    height:80px;
+    border-radius:50%;
+    animation:fly linear infinite;
+}
+
+.balloon::after{
+    content:"";
+    position:absolute;
+    width:2px;
+    height:70px;
+    background:white;
+    left:50%;
+    top:80px;
+}
+
+@keyframes fly{
+    from{
+        transform:translateY(0);
+    }
+    to{
+        transform:translateY(-120vh);
+    }
+}
+
+/* Konfeti */
+.confetti{
+    position:absolute;
+    width:10px;
+    height:10px;
+    animation:fall linear infinite;
+}
+
+@keyframes fall{
+    from{
+        transform:translateY(-20px) rotate(0deg);
+    }
+    to{
+        transform:translateY(110vh) rotate(720deg);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🎉 SELAMAT ULANG TAHUN 🎉</h1>
+    <h2>💖 AQISS 💖</h2>
+    <p>Semoga panjang umur, sehat selalu,<br>
+    bahagia, sukses, dan semua impianmu tercapai. 🎂✨</p>
+</div>
+
+<script>
+// Balon
+const colors=["red","blue","yellow","lime","cyan","pink","orange","purple"];
+
+for(let i=0;i<25;i++){
+    let b=document.createElement("div");
+    b.className="balloon";
+    b.style.left=Math.random()*100+"vw";
+    b.style.background=colors[Math.floor(Math.random()*colors.length)];
+    b.style.animationDuration=(6+Math.random()*6)+"s";
+    b.style.animationDelay=Math.random()*5+"s";
+    document.body.appendChild(b);
+}
+
+// Konfeti
+for(let i=0;i<200;i++){
+    let c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=colors[Math.floor(Math.random()*colors.length)];
+    c.style.animationDuration=(3+Math.random()*4)+"s";
+    c.style.animationDelay=Math.random()*5+"s";
+    document.body.appendChild(c);
+}
+</script>
+
+</body>
+</html>
