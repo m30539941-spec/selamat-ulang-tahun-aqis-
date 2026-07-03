@@ -2,133 +2,180 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Selamat Ulang Tahun Aqiss</title>
+<title>Happy Birthday Aqiss</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
-
 body{
-    overflow:hidden;
-    background:linear-gradient(135deg,#ff5fa2,#ffb347);
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
+  margin:0;
+  overflow:hidden;
+  height:100vh;
+  background: radial-gradient(circle,#ff9a9e,#fad0c4,#fbc2eb);
+  font-family: Arial;
+  color:white;
 }
 
-.container{
-    text-align:center;
-    color:white;
-    z-index:10;
+/* CENTER */
+.center{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  z-index:2;
 }
 
+/* 3D TEXT */
 h1{
-    font-size:60px;
-    animation:zoom 2s infinite alternate;
+  font-size:40px;
+  text-shadow:
+    0 1px 0 #ccc,
+    0 2px 0 #c9c9c9,
+    0 3px 0 #bbb,
+    0 4px 0 #b9b9b9,
+    0 5px 0 #aaa,
+    0 6px 1px rgba(0,0,0,.2),
+    0 0 20px #ff4da6,
+    0 0 30px #ff4da6;
+  animation: glow 2s infinite alternate;
 }
 
-h2{
-    font-size:35px;
-    margin-top:10px;
+@keyframes glow{
+  from{transform:scale(1);}
+  to{transform:scale(1.05);}
 }
 
 p{
-    margin-top:20px;
-    font-size:22px;
+  max-width:300px;
+  font-size:14px;
 }
 
-@keyframes zoom{
-    from{transform:scale(1);}
-    to{transform:scale(1.1);}
+/* BUTTON */
+button{
+  margin-top:10px;
+  padding:10px 15px;
+  border:none;
+  border-radius:20px;
+  background:#ff4da6;
+  color:white;
+  cursor:pointer;
 }
 
-/* Balon */
-.balloon{
-    position:absolute;
-    bottom:-150px;
-    width:60px;
-    height:80px;
-    border-radius:50%;
-    animation:fly linear infinite;
-}
-
-.balloon::after{
-    content:"";
-    position:absolute;
-    width:2px;
-    height:70px;
-    background:white;
-    left:50%;
-    top:80px;
-}
-
-@keyframes fly{
-    from{
-        transform:translateY(0);
-    }
-    to{
-        transform:translateY(-120vh);
-    }
-}
-
-/* Konfeti */
-.confetti{
-    position:absolute;
-    width:10px;
-    height:10px;
-    animation:fall linear infinite;
+/* HEART */
+.heart{
+  position:absolute;
+  color:#ff2d75;
+  animation: fall linear forwards;
 }
 
 @keyframes fall{
-    from{
-        transform:translateY(-20px) rotate(0deg);
-    }
-    to{
-        transform:translateY(110vh) rotate(720deg);
-    }
+  0%{transform:translateY(-10vh);opacity:1;}
+  100%{transform:translateY(110vh);opacity:0;}
+}
+
+/* CAKE */
+.cake{
+  font-size:60px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+  100%{transform:translateY(0);}
+}
+
+/* CANVAS */
+canvas{
+  position:absolute;
+  top:0;
+  left:0;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-    <h1>🎉 SELAMAT ULANG TAHUN 🎉</h1>
-    <h2>💖 AQISS 💖</h2>
-    <p>Semoga panjang umur, sehat selalu,<br>
-    bahagia, sukses, dan semua impianmu tercapai. 🎂✨</p>
+<canvas id="confetti"></canvas>
+
+<div class="center">
+  <div class="cake">🎂</div>
+  <h1>HAPPY BIRTHDAY AQISS</h1>
+  <p id="text"></p>
+
+  <button onclick="alert('Semoga semua doa terbaik selalu untuk kamu 🤍 - rapipp')">
+    💌 Open Wish
+  </button>
+
+  <button onclick="document.getElementById('music').play()">
+    🎵 Play Music
+  </button>
 </div>
 
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mp3">
+</audio>
+
 <script>
-// Balon
-const colors=["red","blue","yellow","lime","cyan","pink","orange","purple"];
+// typing
+const msg="Semoga panjang umur, sehat selalu, rezeki lancar, semua cita-cita tercapai, dan selalu bahagia setiap hari 🤍";
+let i=0;
+function type(){
+  if(i<msg.length){
+    document.getElementById("text").innerHTML += msg[i];
+    i++;
+    setTimeout(type,40);
+  }
+}
+type();
 
-for(let i=0;i<25;i++){
-    let b=document.createElement("div");
-    b.className="balloon";
-    b.style.left=Math.random()*100+"vw";
-    b.style.background=colors[Math.floor(Math.random()*colors.length)];
-    b.style.animationDuration=(6+Math.random()*6)+"s";
-    b.style.animationDelay=Math.random()*5+"s";
-    document.body.appendChild(b);
+// HEARTS
+function heart(){
+  const h=document.createElement("div");
+  h.classList.add("heart");
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=Math.random()*20+10+"px";
+  h.style.animationDuration=(Math.random()*3+2)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+}
+setInterval(heart,100);
+
+// CONFETTI
+const canvas=document.getElementById("confetti");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let pieces=[];
+
+for(let i=0;i<120;i++){
+  pieces.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*6+2,
+    d:Math.random()*2+1
+  });
 }
 
-// Konfeti
-for(let i=0;i<200;i++){
-    let c=document.createElement("div");
-    c.className="confetti";
-    c.style.left=Math.random()*100+"vw";
-    c.style.background=colors[Math.floor(Math.random()*colors.length)];
-    c.style.animationDuration=(3+Math.random()*4)+"s";
-    c.style.animationDelay=Math.random()*5+"s";
-    document.body.appendChild(c);
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="white";
+
+  for(let i=0;i<pieces.length;i++){
+    let p=pieces[i];
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2,true);
+    ctx.fill();
+
+    p.y += p.d;
+    if(p.y>canvas.height){
+      p.y=0;
+      p.x=Math.random()*canvas.width;
+    }
+  }
 }
+setInterval(draw,20);
 </script>
 
 </body>
