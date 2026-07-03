@@ -10,11 +10,11 @@ body{
   overflow:hidden;
   height:100vh;
   background: radial-gradient(circle,#ff9a9e,#fad0c4,#fbc2eb);
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   color:white;
 }
 
-/* CENTER */
+/* CENTER CARD */
 .center{
   position:absolute;
   top:50%;
@@ -24,29 +24,16 @@ body{
   z-index:2;
 }
 
-/* 3D TEXT */
 h1{
-  font-size:40px;
-  text-shadow:
-    0 1px 0 #ccc,
-    0 2px 0 #c9c9c9,
-    0 3px 0 #bbb,
-    0 4px 0 #b9b9b9,
-    0 5px 0 #aaa,
-    0 6px 1px rgba(0,0,0,.2),
-    0 0 20px #ff4da6,
-    0 0 30px #ff4da6;
-  animation: glow 2s infinite alternate;
+  font-size:32px;
+  text-shadow:0 0 10px #ff4da6, 0 0 20px #ff4da6;
 }
 
-@keyframes glow{
-  from{transform:scale(1);}
-  to{transform:scale(1.05);}
-}
-
-p{
-  max-width:300px;
+#text{
   font-size:14px;
+  max-width:320px;
+  margin-top:10px;
+  line-height:1.5;
 }
 
 /* BUTTON */
@@ -54,15 +41,17 @@ button{
   margin-top:10px;
   padding:10px 15px;
   border:none;
-  border-radius:20px;
+  border-radius:15px;
+  cursor:pointer;
   background:#ff4da6;
   color:white;
-  cursor:pointer;
+  font-weight:bold;
 }
 
 /* HEART */
 .heart{
   position:absolute;
+  top:-10px;
   color:#ff2d75;
   animation: fall linear forwards;
 }
@@ -72,23 +61,12 @@ button{
   100%{transform:translateY(110vh);opacity:0;}
 }
 
-/* CAKE */
-.cake{
-  font-size:60px;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float{
-  0%{transform:translateY(0);}
-  50%{transform:translateY(-10px);}
-  100%{transform:translateY(0);}
-}
-
-/* CANVAS */
+/* CONFETTI */
 canvas{
   position:absolute;
   top:0;
   left:0;
+  z-index:1;
 }
 </style>
 </head>
@@ -98,80 +76,82 @@ canvas{
 <canvas id="confetti"></canvas>
 
 <div class="center">
-  <div class="cake">🎂</div>
-  <h1>HAPPY BIRTHDAY AQISS</h1>
+  <h1>💖 HAPPY BIRTHDAY AQISS 💖</h1>
   <p id="text"></p>
 
-  <button onclick="alert('Semoga semua doa terbaik selalu untuk kamu 🤍 - rapipp')">
-    💌 Open Wish
-  </button>
+  <!-- MUSIC -->
+  <audio id="music" loop>
+    <source src="music.mp3" type="audio/mp3">
+  </audio>
 
   <button onclick="document.getElementById('music').play()">
     🎵 Play Music
   </button>
+
+  <button onclick="alert('Semoga kamu selalu bahagia, sehat, dan semua cita-citamu tercapai 🤍 - dari rapipp')">
+    💌 Open Message
+  </button>
 </div>
 
-<audio id="music" loop>
-  <source src="music.mp3" type="audio/mp3">
-</audio>
-
 <script>
-// typing
-const msg="Semoga panjang umur, sehat selalu, rezeki lancar, semua cita-cita tercapai, dan selalu bahagia setiap hari 🤍";
-let i=0;
-function type(){
-  if(i<msg.length){
-    document.getElementById("text").innerHTML += msg[i];
+// ===== TEXT (FIXED) =====
+const msg = "selamat ulang tahun aqiss, semoga panjang umur dan sehatt selaluu serta jaga kesehatan dan semangat dalam meraih cita cita nya. oiyaa dan satu lagi semogaa kamuuu langgeng teruss nyaa samaa bg wazzaa semogaa kamuuu happyy makasiiii yaaa udaa bacaaa🤍 dari rapipp";
+
+let i = 0;
+function typing(){
+  if(i < msg.length){
+    document.getElementById("text").innerHTML += msg.charAt(i);
     i++;
-    setTimeout(type,40);
+    setTimeout(typing,45);
   }
 }
-type();
+typing();
 
-// HEARTS
-function heart(){
-  const h=document.createElement("div");
-  h.classList.add("heart");
-  h.innerHTML="💖";
-  h.style.left=Math.random()*100+"vw";
-  h.style.fontSize=Math.random()*20+10+"px";
-  h.style.animationDuration=(Math.random()*3+2)+"s";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),5000);
+// ===== LOVE FALL =====
+function love(){
+  const el = document.createElement("div");
+  el.classList.add("heart");
+  el.innerHTML = "💖";
+  el.style.left = Math.random()*100 + "vw";
+  el.style.fontSize = (Math.random()*20+10) + "px";
+  el.style.animationDuration = (Math.random()*3+2) + "s";
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),5000);
 }
-setInterval(heart,100);
+setInterval(love,120);
 
-// CONFETTI
-const canvas=document.getElementById("confetti");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+// ===== CONFETTI =====
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
 
-let pieces=[];
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let pieces = [];
 
 for(let i=0;i<120;i++){
   pieces.push({
-    x:Math.random()*canvas.width,
-    y:Math.random()*canvas.height,
-    r:Math.random()*6+2,
-    d:Math.random()*2+1
+    x: Math.random()*canvas.width,
+    y: Math.random()*canvas.height,
+    r: Math.random()*6+2,
+    d: Math.random()*2+1
   });
 }
 
 function draw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  ctx.fillStyle="white";
+  ctx.fillStyle = "white";
 
   for(let i=0;i<pieces.length;i++){
-    let p=pieces[i];
+    let p = pieces[i];
     ctx.beginPath();
     ctx.arc(p.x,p.y,p.r,0,Math.PI*2,true);
     ctx.fill();
 
     p.y += p.d;
-    if(p.y>canvas.height){
-      p.y=0;
-      p.x=Math.random()*canvas.width;
+    if(p.y > canvas.height){
+      p.y = 0;
+      p.x = Math.random()*canvas.width;
     }
   }
 }
